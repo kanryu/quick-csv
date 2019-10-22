@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class QuickCsv\QuickCsv</title>
+
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-QuickCsv.html">
+						QuickCsv					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-QuickCsv.QuickCsv.html">QuickCsv</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-QuickCsv.html" title="Summary of QuickCsv"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class QuickCsv</h1>
+
+
+	<div class="description">
+	<p>Module to import CSV very fast</p>
+
+<ul>
+<li>Import your CSV data directly into a new/existing temporary table with an RDB-specific API.</li>
+<li>Validation of input values and correlation record check are confirmed by executing SQL.</li>
+<li>To move data from the temporary table to the final table, execute a normal INSERT / UPDATE queries.</li>
+</ul>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-QuickCsv.html">QuickCsv</a><br>
+		
+
+			<b>Located at</b> <a href="source-class-QuickCsv.QuickCsv.html#5-583" title="Go to source code">QuickCsv.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#55-65" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			<p>Several properties can be specified here, but no arguments are required.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Several properties can be specified here, but no arguments are required.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$options</var></dt>
+					<dd>The name of the table for which data is finally imported</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setProperties" id="_setProperties">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setProperties">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#67-79" title="Go to source code">setProperties</a>( <span> <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			<p>Set properties in batch</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set properties in batch</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setFieldSchema" id="_setFieldSchema">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setFieldSchema">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#81-87" title="Go to source code">setFieldSchema</a>( <span> <var>$schema</var></span> )</code>
+
+		<div class="description short">
+			<p>Specify associative array the relationship between each column of CSV
+ to be imported and the column of import destination table.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Specify associative array the relationship between each column of CSV to be imported and the column of import destination table.</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setPdo" id="_setPdo">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setPdo">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#89-101" title="Go to source code">setPdo</a>( <span> <var>$pdo</var></span> )</code>
+
+		<div class="description short">
+			<p>Set up an instance of PDO.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set up an instance of PDO.</p>
+
+<p>For MySQL, you need to initialize it with PDO::MYSQL_ATTR_LOCAL_INFILE.</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setQueryCallback" id="_setQueryCallback">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setQueryCallback">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#103-110" title="Go to source code">setQueryCallback</a>( <span> <var>$query_callback</var></span> )</code>
+
+		<div class="description short">
+			<p>Customize how queries are issued to the database.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Customize how queries are issued to the database.</p>
+
+<p>If PDO is used directly, setPdo() can be used.</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="execQuery" id="_execQuery">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_execQuery">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#112-117" title="Go to source code">execQuery</a>( <span> <var>$sql</var></span>, <span> <var>$params</var></span>, <span> <var>$api</var></span> )</code>
+
+		<div class="description short">
+			<p>Run the query to the database with query_callback().</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Run the query to the database with query_callback().</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="create" id="_create">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_create">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#119-162" title="Go to source code">create</a>( <span>string <var>$dataTableName</var> = <span class="php-keyword1">null</span></span>, <span>array <var>$schema</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Create a temporary table</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Create a temporary table</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$dataTableName</var></dt>
+					<dd>The name of the temporary table</dd>
+					<dt><var>$schema</var></dt>
+					<dd>Give the schema defining each column of the imported CSV as an associative array.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="import" id="_import">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_import">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#164-212" title="Go to source code">import</a>( <span>string <var>$path</var></span>, <span>array <var>$dataTableName</var> = <span class="php-keyword1">null</span></span>, <span> <var>$schema</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Specify CSV file and import data into the temporary table</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Specify CSV file and import data into the temporary table</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$path</var></dt>
+					<dd>CSV file full path</dd>
+					<dt><var>$dataTableName</var></dt>
+					<dd>$schema Give the schema defining each column of the imported CSV as an associative array.</dd>
+					<dt><var>$schema</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="validateAllFields" id="_validateAllFields">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_validateAllFields">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#214-262" title="Go to source code">validateAllFields</a>( )</code>
+
+		<div class="description short">
+			<p>Validate all records all fields at once</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Validate all records all fields at once</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>Validation error lines. empty if there is no error,
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="validateBase" id="_validateBase">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_validateBase">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#264-292" title="Go to source code">validateBase</a>( <span>array <var>$api</var></span>, <span>string <var>$fields</var></span>, <span> <var>$additional_tables</var> = <span class="php-quote">''</span></span> )</code>
+
+		<div class="description short">
+			<p>Execute the validation expression specified in the parameter and fetch the row that is true.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Execute the validation expression specified in the parameter and fetch the row that is true.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$api</var></dt>
+					<dd>$fields An associative array with the validation field name as key and the validation expression as value.</dd>
+					<dt><var>$fields</var></dt>
+					<dd>$additional_tables Query string to insert when joining other tables.</dd>
+					<dt><var>$additional_tables</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>Validation error lines. empty if there is no error,
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="validateNonExistForeignKey" id="_validateNonExistForeignKey">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_validateNonExistForeignKey">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#294-326" title="Go to source code">validateNonExistForeignKey</a>( <span> <var>$field</var></span>, <span> <var>$foreignKey</var></span>, <span> <var>$foreignTableName</var></span>, <span> <var>$condition</var> = <span class="php-quote">''</span></span> )</code>
+
+		<div class="description short">
+			<p>Returns records where the specified field does not meet foreign key constraints</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns records where the specified field does not meet foreign key constraints</p>
+
+<p>If the specified field is the primary key of an external table, the key must exist in the external table.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$field</var></dt>
+					<dd>CSV field name</dd>
+					<dt><var>$foreignKey</var></dt>
+					<dd>Foreign key name (field name on the target table)</dd>
+					<dt><var>$foreignTableName</var></dt>
+					<dd>Target table name with foreign key</dd>
+					<dt><var>$condition</var></dt>
+					<dd>Expression that searches the foreign table</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>error lines
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="validateDuplicatedId" id="_validateDuplicatedId">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_validateDuplicatedId">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#328-369" title="Go to source code">validateDuplicatedId</a>( <span>string|array <var>$field</var></span> )</code>
+
+		<div class="description short">
+			<p>Detect records with duplicate specified fields in CSV</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Detect records with duplicate specified fields in CSV</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$field</var></dt>
+					<dd>Field to check</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>error lines
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getNotDefaultFormula" id="_getNotDefaultFormula">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getNotDefaultFormula">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#371-394" title="Go to source code">getNotDefaultFormula</a>( <span> <var>$field</var></span> )</code>
+
+		<div class="description short">
+			<p>Returns a judgment expression that the value of the specified field is not the default value.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns a judgment expression that the value of the specified field is not the default value.</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="updateFieldNumberByAutoCount" id="_updateFieldNumberByAutoCount">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_updateFieldNumberByAutoCount">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#396-432" title="Go to source code">updateFieldNumberByAutoCount</a>( <span>string <var>$field</var></span>, <span>integer <var>$baseNumber</var> = <span class="php-num">0</span></span>, <span> <var>$targetTableName</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Updates to the line where the numeric field of the specified required item is not entered with the automatically incremented value.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Updates to the line where the numeric field of the specified required item is not entered with the automatically incremented value.</p>
+
+<p>Numbers are generated so that they do not overlap with existing records in the target table.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$field</var></dt>
+					<dd>Field name to update</dd>
+					<dt><var>$baseNumber</var></dt>
+					<dd>Minimum value to auto increment</dd>
+					<dt><var>$targetTableName</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="updateFieldNumberByAutoCountWithPrefix" id="_updateFieldNumberByAutoCountWithPrefix">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_updateFieldNumberByAutoCountWithPrefix">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#434-485" title="Go to source code">updateFieldNumberByAutoCountWithPrefix</a>( <span>string <var>$field</var></span>, <span>string <var>$prefix</var></span>, <span>string <var>$body</var> = <span class="php-quote">'#'</span></span>, <span>integer <var>$baseNumber</var> = <span class="php-num">0</span></span>, <span> <var>$targetTableName</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Updates to the line where the numeric field with prefix of the specified required item is not entered with the automatically incremented value.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Updates to the line where the numeric field with prefix of the specified required item is not entered with the automatically incremented value.</p>
+
+<p>Numbers are generated so that they do not overlap with existing records in the target table.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$field</var></dt>
+					<dd>Field name to update</dd>
+					<dt><var>$prefix</var></dt>
+					<dd>Prefix contained in field value</dd>
+					<dt><var>$body</var></dt>
+					<dd>The number of digits to interpolate with 0. If '0000', the value 12 must be '0012'.</dd>
+					<dt><var>$baseNumber</var></dt>
+					<dd>Minimum value to auto increment</dd>
+					<dt><var>$targetTableName</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="updateExistingRecords" id="_updateExistingRecords">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_updateExistingRecords">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#487-527" title="Go to source code">updateExistingRecords</a>( <span>array <var>$immediates</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			<p>Overwrite records existing in the target table with CSV</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Overwrite records existing in the target table with CSV</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$immediates</var></dt>
+					<dd>Array for overwriting specified fields with immediates</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="insertNonExistingRecords" id="_insertNonExistingRecords">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_insertNonExistingRecords">#</a>
+		<code><a href="source-class-QuickCsv.QuickCsv.html#529-580" title="Go to source code">insertNonExistingRecords</a>( <span>array <var>$immediates</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			<p>Add a new record from CSV that does not exist in the target table</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Add a new record from CSV that does not exist in the target table</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$immediates</var></dt>
+					<dd>Array for overwriting specified fields with immediates</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="pdo" id="$pdo">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#13-14" title="Go to source code"><var>$pdo</var></a>
+
+			<div class="description short">
+				<p>This property is set when using PDO. Call setPdo().</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>This property is set when using PDO. Call setPdo().</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$pdo" class="anchor">#</a>
+				<code><span class="php-keyword1">null</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="query_callback" id="$query_callback">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#16-18" title="Go to source code"><var>$query_callback</var></a>
+
+			<div class="description short">
+				<p>Set this property when you want to define query execution independently.
+ Automatically updated when using PDO.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Set this property when you want to define query execution independently. Automatically updated when using PDO.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$query_callback" class="anchor">#</a>
+				<code><span class="php-keyword1">null</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="fieldSchema" id="$fieldSchema">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#20-21" title="Go to source code"><var>$fieldSchema</var></a>
+
+			<div class="description short">
+				<p>Give the schema defining each column of the imported CSV as an associative array.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Give the schema defining each column of the imported CSV as an associative array.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$fieldSchema" class="anchor">#</a>
+				<code><span class="php-keyword1">array</span>()</code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="dataTableName" id="$dataTableName">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#23-24" title="Go to source code"><var>$dataTableName</var></a>
+
+			<div class="description short">
+				<p>Temporary table name to specify as the CSV direct import destination.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Temporary table name to specify as the CSV direct import destination.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$dataTableName" class="anchor">#</a>
+				<code><span class="php-quote">'tempCsvData'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="targetTableName" id="$targetTableName">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#26-27" title="Go to source code"><var>$targetTableName</var></a>
+
+			<div class="description short">
+				<p>Target table name where data is finally entered.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Target table name where data is finally entered.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$targetTableName" class="anchor">#</a>
+				<code><span class="php-quote">'TARGET_TABLE'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="targetPrimaryKey" id="$targetPrimaryKey">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#29-30" title="Go to source code"><var>$targetPrimaryKey</var></a>
+
+			<div class="description short">
+				<p>Primary key of the target table where data is finally entered.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Primary key of the target table where data is finally entered.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$targetPrimaryKey" class="anchor">#</a>
+				<code><span class="php-quote">'PRIMARY_KEY'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="csvSeparator" id="$csvSeparator">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#32" title="Go to source code"><var>$csvSeparator</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$csvSeparator" class="anchor">#</a>
+				<code><span class="php-quote">&quot;','&quot;</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="csvEncloser" id="$csvEncloser">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#33" title="Go to source code"><var>$csvEncloser</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$csvEncloser" class="anchor">#</a>
+				<code><span class="php-quote">&quot;'\&quot;'&quot;</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="csvLineStart" id="$csvLineStart">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#34" title="Go to source code"><var>$csvLineStart</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$csvLineStart" class="anchor">#</a>
+				<code><span class="php-quote">&quot;''&quot;</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="csvLineSep" id="$csvLineSep">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#35" title="Go to source code"><var>$csvLineSep</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$csvLineSep" class="anchor">#</a>
+				<code><span class="php-quote">&quot;'\\r\\n'&quot;</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="csvRecordId" id="$csvRecordId">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#37-38" title="Go to source code"><var>$csvRecordId</var></a>
+
+			<div class="description short">
+				<p>AUTO_INCREMENT field for returning row number on CSV</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>AUTO_INCREMENT field for returning row number on CSV</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$csvRecordId" class="anchor">#</a>
+				<code><span class="php-quote">'id'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="hasCsvHeader" id="$hasCsvHeader">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#40-41" title="Go to source code"><var>$hasCsvHeader</var></a>
+
+			<div class="description short">
+				<p>If true, the first line of CSV is ignored when importing.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>If true, the first line of CSV is ignored when importing.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$hasCsvHeader" class="anchor">#</a>
+				<code><span class="php-keyword1">true</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="asTemporary" id="$asTemporary">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#43-47" title="Go to source code"><var>$asTemporary</var></a>
+
+			<div class="description short">
+				<p>If true, the CSV import table is TEMPORARY TABLE.
+ If false, the table remains after the import is complete.
+ Although there is no practical meaning, the import result remains.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>If true, the CSV import table is TEMPORARY TABLE. If false, the table remains after the import is complete. Although there is no practical meaning, the import result remains.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$asTemporary" class="anchor">#</a>
+				<code><span class="php-keyword1">true</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="tableCharCode" id="$tableCharCode">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#49-50" title="Go to source code"><var>$tableCharCode</var></a>
+
+			<div class="description short">
+				<p>Character code of temporary table</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Character code of temporary table</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$tableCharCode" class="anchor">#</a>
+				<code><span class="php-quote">'utf8'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="csvCharCode" id="$csvCharCode">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-QuickCsv.QuickCsv.html#52-53" title="Go to source code"><var>$csvCharCode</var></a>
+
+			<div class="description short">
+				<p>CSV file character code</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>CSV file character code</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$csvCharCode" class="anchor">#</a>
+				<code><span class="php-quote">'cp932'</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js?855599ff542e674756c9ac851bfb7582344e823c"></script>
+<script src="elementlist.js?00d7b7c1243e582570e614d13d338b35d8b7b5e8"></script>
+</body>
+</html>
