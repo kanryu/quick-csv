@@ -1,0 +1,3 @@
+productId,categoryId,productCode,productName,price,cost,displayFlag,user column
+,,,,,,,"require validation error"
+"1234567890123456","1234567890","111111111122222222221","1111111111222222222233333333333344444444441","1234567890","123546789012345","11","maxlength error"

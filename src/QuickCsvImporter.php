@@ -8,7 +8,7 @@ namespace QuickCsv;
  * - Validation of input values and correlation record check are confirmed by executing SQL.
  * - To move data from the temporary table to the final table, execute a normal INSERT / UPDATE queries.
  */
-class QuickCsv
+class QuickCsvImporter
 {
     /** This property is set when using PDO. Call setPdo(). */
     public $pdo = null;
@@ -19,6 +19,9 @@ class QuickCsv
     
     /** Give the schema defining each column of the imported CSV as an associative array. */
     public $fieldSchema = array();
+    
+    /** associative array of $fieldSchema */
+    public $fieldMap = array();
     
     /** Temporary table name to specify as the CSV direct import destination. */
     public $dataTableName = 'tempCsvData';
@@ -45,6 +48,9 @@ class QuickCsv
      *  Although there is no practical meaning, the import result remains.
      */
     public $asTemporary = true;
+    
+    /** If true, dump sqls. */
+    public $dumpSql = false;
     
     /** Character code of temporary table */
     public $tableCharCode = 'utf8';
@@ -84,6 +90,11 @@ class QuickCsv
     public function setFieldSchema($schema)
     {
         $this->fieldSchema = $schema;
+        $this->fieldMap = array();
+        foreach ($schema as $i => $v) {
+            $name = array_key_exists('name', $v) ? $v['name'] : $i;
+            $this->fieldMap[$name] = $v;
+        }
     }
     
     /** Set up an instance of PDO.
@@ -93,10 +104,21 @@ class QuickCsv
     public function setPdo($pdo)
     {
         $this->pdo = $pdo;
-        $this->query_callback = function ($sql, $params, $api) {
+        $that = $this;
+        $this->query_callback = function ($sql, $params, $api) use($that) {
+            if ($that->dumpSql) {
+                echo "----------- {$api}:\n";
+                echo "$sql\n";
+            }
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute($params);
-            return $result;
+            switch($api) {
+                case 'validateAllFields':
+                    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                    break;
+                default:
+                    return $result;
+            }
         };
     }
     
@@ -136,12 +158,11 @@ class QuickCsv
         if (empty($this->fieldSchema)) {
             throw new \Exception("[QuickCsv]: You must define the CSV schema!");
         }
-        var_dump($this->query_callback);
         $this->execQuery("DROP TABLE IF EXISTS {$this->dataTableName}", null, 'create:drop');
         
         // expand fieldSchema [*] ['field'] as each field schema of the table
         $schemas = array();
-        foreach ($this->fieldSchema as $f => $v) {
+        foreach ($this->fieldMap as $f => $v) {
             $length = $v['maxlength'] + 1;
             $type = $length > 255 ? 'TEXT' : "VARCHAR({$length})";
             $schema_default = 'DEFAULT ' . (array_key_exists('default', $v) ? $v['default'] : "''");
@@ -182,7 +203,7 @@ class QuickCsv
         }
         $names = array();
         $setters = array();
-        foreach($this->fieldSchema as $field => $v) {
+        foreach($this->fieldMap as $field => $v) {
             if(!array_key_exists('default', $v)) {
                 $names[] = $field;
                 continue;
@@ -221,7 +242,7 @@ SQL;
             throw new \Exception("[QuickCsv]: You must define the CSV schema!");
         }
         $fields = array();
-        foreach($this->fieldSchema as $field => $v) {
+        foreach($this->fieldMap as $field => $v) {
             if(array_key_exists('maxlength', $v)) {
                 $fields["{$field}_maxlength"] = "CHAR_LENGTH({$field}) > {$v['maxlength']}";
             }
@@ -374,10 +395,10 @@ SQL;
         if (empty($this->fieldSchema)) {
             throw new \Exception("[QuickCsv]: You must define the CSV schema!");
         }
-        if (!array_key_exists($field, $this->fieldSchema)) {
+        if (!array_key_exists($field, $this->fieldMap)) {
             throw new \Exception("[QuickCsv]: field must exist in the fieldSchema!");
         }
-        $v = $this->fieldSchema[$field];
+        $v = $this->fieldMap[$field];
         if(array_key_exists('required', $v)) {
             $empty_check = "1=1";
         } elseif (array_key_exists('default', $v) && $v['default'] == 'NULL' ) {
@@ -492,18 +513,23 @@ SQL;
     {
         $schemas = array();
         $params = array();
-        foreach($this->fieldSchema as $f => $v) {
+        foreach($this->fieldMap as $f => $v) {
             if (array_key_exists('skip', $v) && $v['skip']) {
                 continue;
             }
             if (array_key_exists($f, $immediates)) {
                 $schemas[] = "t1.{$f} = :{$f}";
                 $params[":{$f}"] = $immediates[$f];
+                unset($immediates[$f]);
             } else {
                 $schemas[] = "t1.{$f} = t2.{$f}";
             }
         }
-        $field_lines = implode(",\n", $schemas);
+        foreach($immediates as $f => $v) {
+            $schemas[] = "t1.{$f} = :{$f}";
+            $params[":{$f}"] = $v;
+        }
+        $field_lines = implode(",\n                ", $schemas);
         
         $condition = "t1.{$this->targetPrimaryKey} = t2.{$this->targetPrimaryKey}";
         if (is_array($this->targetPrimaryKey)) {
@@ -536,7 +562,7 @@ SQL;
         $names2 = array();
         $schemas = array();
         $params = array();
-        foreach($this->fieldSchema as $f => $v) {
+        foreach($this->fieldMap as $f => $v) {
             if (array_key_exists('skip', $v) && $v['skip']) {
                 continue;
             }
@@ -544,9 +570,15 @@ SQL;
             if (array_key_exists($f, $immediates)) {
                 $names2[] = ":{$f}";
                 $params[":{$f}"] = $immediates[$f];
+                unset($immediates[$f]);
             } else {
-                $names2[] = $f;
+                $names2[] = "t2.{$f}";
             }
+        }
+        foreach($immediates as $f => $v) {
+            $names1[] = $f;
+            $names2[] = ":{$f}";
+            $params[":{$f}"] = $v;
         }
         $field_lines1 = implode(",", $names1);
         $field_lines2 = implode(",", $names2);
@@ -576,7 +608,7 @@ SQL;
                 {$condition2}
             ORDER BY t2.{$this->csvRecordId}
         ";
-        return $this->execQuery($sql, $params, 'updateExistingRecords');
+        return $this->execQuery($sql, $params, 'insertNonExistingRecords');
     }
 
 
