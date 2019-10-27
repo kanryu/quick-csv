@@ -6,7 +6,7 @@ Portable PHP library that allows you to import and export CSV very fast by issui
 ## Usage
 
 ```php
-use QuickCsv\QuickCsv;
+use Kanryu\QuickCsv\QuickCsv;
 
 // -- (initialize begins)
 $table_field_tmpl = array(
