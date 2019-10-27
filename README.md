@@ -6,19 +6,19 @@ Portable PHP library that allows you to import and export CSV very fast by issui
 ## Usage
 
 ```php
-use Kanryu\QuickCsv\QuickCsv;
+use Kanryu\QuickCsv\QuickCsvImporter;
 
 // -- (initialize begins)
 $table_field_tmpl = array(
-        'productId'                   => array('no' => 1,  'type' => 'decimal(15)',   'maxlength' => 15,   ), 
-        'categoryId'                  => array('no' => 2,  'type' => 'decimal(9)',    'maxlength' => 9,    'required' => true),
-        'productCode'                 => array('no' => 3,  'type' => 'varchar',       'maxlength' => 20,   ),
-        'productName'                 => array('no' => 4,  'type' => 'varchar',       'maxlength' => 85,   'required' => true),
-        'price'                       => array('no' => 6,  'type' => 'decimal(8)',    'maxlength' => 8,    'required' => true),
-        'cost'                        => array('no' => 7,  'type' => 'decimal(14,5)', 'maxlength' => 14,   'default' => "NULL"),
-        'displayFlag'                 => array('no' => 17, 'type' => 'decimal(1)',    'maxlength' => 1,    'default' => "'0'", 'custom' => "displayFlag BETWEEN '0' AND '1'"),
+	array('name' => 'productId',   'type' => 'decimal(15)',   'maxlength' => 15,   ), 
+	array('name' => 'categoryId',  'type' => 'decimal(9)',    'maxlength' => 9,    'required' => true),
+	array('name' => 'productCode', 'type' => 'varchar',       'maxlength' => 20,   ),
+	array('name' => 'productName', 'type' => 'varchar',       'maxlength' => 40,   'required' => true),
+	array('name' => 'price',       'type' => 'decimal(8,2)',  'maxlength' => 8,    'required' => true),
+	array('name' => 'cost',        'type' => 'decimal(14,5)', 'maxlength' => 14,   'default' => "NULL"),
+	array('name' => 'deleteFlag',  'type' => 'decimal(1)',    'maxlength' => 1,    'default' => "'0'", 'custom' => "deleteFlag BETWEEN '0' AND '1'"),
 );
-$qcsv = new QuickCsv([
+$qcsv = new QuickCsvImporter([
     'targetTableName' => 'Product', 
     'targetPrimaryKey' => 'productId', 
     'fieldSchema' => $table_field_tmpl
