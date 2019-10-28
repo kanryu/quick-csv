@@ -2,7 +2,7 @@
 require_once dirname(__FILE__).'/bootstrap.php';
 require_once dirname(__FILE__).'/../src/QuickCsvImporter.php';
 require_once dirname(__FILE__).'/../src/Mysql/QuickCsvImporter.php';
-use QuickCsv\MySQL\QuickCsvImporter;
+use Kanryu\QuickCsv\MySQL\QuickCsvImporter;
 
 $table_field_tmpl = array(
 	array('name' => 'productId',   'type' => 'decimal(15)',   'maxlength' => 15,   ), 
@@ -18,13 +18,13 @@ try {
     $pdo = new PDO($pdo_dsn, DB_USER, DB_PASS, $pdo_options);
     echo "Session Successed\n";
     
-    $qcsv = new QuickCsvImporter([
+    $qcsv = new QuickCsvImporter(array(
         'targetTableName' => 'Product', 
         'targetPrimaryKey' => 'productId', 
         'fieldSchema' => $table_field_tmpl,
         'asTemporary' => false,
         'dumpSql' => true,
-    ]);
+    ));
     $qcsv->setPdo($pdo);
 //    $qcsv->setQueryCallback(function ($sql, $params, $api) {
 //        echo "----------- {$api}:\n";

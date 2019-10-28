@@ -1,7 +1,7 @@
 <?php
 
-namespace QuickCsv\MySQL;
-use \QuickCsv\QuickCsvImporter as QuickCsvImporterBase;
+namespace Kanryu\QuickCsv\MySQL;
+use \Kanryu\QuickCsv\QuickCsvImporter as QuickCsvImporterBase;
 
 /** Module to import CSV very fast
  *

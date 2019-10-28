@@ -4,7 +4,7 @@ require_once dirname(__FILE__).'/../src/QuickCsvImporter.php';
 require_once dirname(__FILE__).'/../src/Mysql/QuickCsvImporter.php';
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Constraint\IsEqual;
-use QuickCsv\MySQL\QuickCsvImporter;
+use Kanryu\QuickCsv\MySQL\QuickCsvImporter;
 
 class QuickCsvImporterSchemaTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace QuickCsv;
+namespace Kanryu\QuickCsv;
 
 /** Module to import CSV very fast
  *
