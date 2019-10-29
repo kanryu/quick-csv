@@ -45,6 +45,10 @@ $qcsv->validateNonExistForeignKey('categoryId', 'categoryId', 'Category', 'delet
 $qcsv->updateExistingRecords(); // Overwrite records existing in the target table with CSV
 $qcsv->insertNonExistingRecords(); // Add a new record from CSV that does not exist in the target table
 ```
+
+## Reference(API Doc)
+https://kanryu.github.io/quick-csv/
+
 ## Complete Sample
 To see *tests/test.php*
 
