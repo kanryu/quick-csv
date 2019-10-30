@@ -1,6 +1,22 @@
 # QuickCsv
 Portable PHP library that allows you to import and export CSV very fast by issuing special queries to RDBs.
 
+## Why is QuickCsv so fast?
+Compared with the input value from the web form, the data imported by CSV has many rows.
+
+Each row in the CSV has a number of columns, and you will need to check for different validations. The row may already exist in the database or may not exist yet. You will check each line and the final data will be input by either INSERT/UPDATE. Since there are a lot of rows, you need to write and execute these operations for the number of rows x columns. It has slow results despite being very hard to implement. You will be disappointed.
+
+QuickCsv solves the CSV import process flexibly and quickly. You just give the column information that the CSV data has as an Array, and the library automatically creates the table and put all the rows of the CSV on it. Without implementing the validation process in PHP, the values of all columns of all rows, correlation check between rows, foreign key constraints with foreign tables, etc. can be solved quickly with SQL. All of these are automatically generated and executed by QuickCsv.
+
+## Your service with QuickCsv
+
+By adopting this library, you will be able to provide such services to users.
+
+- Resolving different character codes between CSV data and database
+- Accept large amounts of CSV very fast
+- Accept any CSV column added, omitted, rearranged (but you need to understand the column order before processing)
+- Accept user-defined columns that do not exist as columns in the destination table
+
 ## Install
 
 ```bash
