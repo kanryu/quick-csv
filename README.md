@@ -62,6 +62,39 @@ $qcsv->updateExistingRecords(); // Overwrite records existing in the target tabl
 $qcsv->insertNonExistingRecords(); // Add a new record from CSV that does not exist in the target table
 ```
 
+## CSV Field Schema
+You give QuickCsvImporter an CSV column definition as an array. This is actually created as a temporary table. Imported CSV data is validated.
+
+- name
+  - The name of the column. It becomes the field name of the temporary table.
+  - If the whole is given as an associative array, the name property of each column can be given as a key of the outer array. In that case, it can be omitted.
+- type
+  - The data type that the field assumes. The temporary table is once imported as VARCHAR and it is determined whether it can be CAST() to the given type.
+  - Available: varchar, alphanumeric, datetime, date, decimal(n), decimal(n,m)
+  - If varchar, do nothing. For other types, some confirmation is made.
+  - Errors: XXX_alphanumeric, XXX_notdatetime, XXX_notinteger
+- maxlength
+  - Determine the length of the string entered in the field.
+  - Each field of the temporary table is defined as a column of maxlength + 1 characters.
+  - Errors: XXX_maxlength
+- required (optional)
+  - The field is required input, and an empty field cause an error.
+  - Errors: XXX_required
+- default (optional)
+  - Change the initial value actually entered in the temporary table if the field is empty.
+  - Since it is concatenated with SQL as it is, it is necessary to write "'abc'" when giving a character string.
+- custom (optional)
+  - Describe the field value judgment formula directly. Write an expression so that the canonical value returns TRUE.
+  - Errors: XXX_custom
+
+Since some validation result field values are sensitive, errors must be recognized in a fixed order.
+
+1. required
+2. maxlength
+3. type
+4. custom
+
+
 ## Reference(API Doc)
 https://kanryu.github.io/quick-csv/
 
