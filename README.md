@@ -80,7 +80,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - Each field of the temporary table is defined as a column of maxlength + 1 characters.
   - Errors: *XXX_maxlength*
 - **field** (optional)
-  - define the field schema of the temporary table as manual
+  - Define the field schema of the temporary table by manual.
   - However, since the DEFAULT option of 'CREATE TABLE' has no effect during CSV import, specify the **default** key.
   - Without **field** key, auto generated as `{$name} VARCHAR({$maxlength+1}) DEFAULT ''`
 - **required** (optional)
