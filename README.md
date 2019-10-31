@@ -93,7 +93,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
 - **custom** (optional)
   - Describe formula to validate the field value directly. 
   - Give an SQL expression so that the canonical value returns TRUE.
-  - You can put all fields you set and `id` field as CSV row on the expression.
+  - You can put all fields you set and `id` field(as CSV row) on the expression.
   - Errors: *XXX_custom*
   - e.g. `deleteFlag BETWEEN '0' AND '1'`
 
