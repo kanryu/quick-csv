@@ -87,7 +87,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - The field is required input, and an empty field cause an error.
   - Errors: *XXX_required*
 - **default** (optional)
-  - Change the initial value actually entered in the temporary table if the field is empty.
+  - Change the initial value actually entered in the temporary table if the value of CSV the field is empty.
   - Since it is concatenated with SQL as it is, it is necessary to write "'abc'" when giving a character string.
   - e.g. `'0'`, `'NULL'`, `"'abc'"`, `'NOW()'` 
 - **custom** (optional)
