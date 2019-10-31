@@ -81,7 +81,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
 - **field** (optional)
   - define the field schema of the template table as manual
   - However, since the DEFAULT option of 'CREATE TABLE' has no effect during CSV import, specify the 'default' key.
-  - default case(without field key), "\`{$name}\` VARCHAR({$maxlength+1}) DEFAULT ''"
+  - default case(without field key), `{$name} VARCHAR({$maxlength+1}) DEFAULT ''`
 - **required** (optional)
   - The field is required input, and an empty field cause an error.
   - Errors: XXX_required
