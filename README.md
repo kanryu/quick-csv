@@ -66,7 +66,7 @@ $qcsv->insertNonExistingRecords(); // Add a new record from CSV that does not ex
 You give QuickCsvImporter an CSV column definition as an array. This is actually created as a temporary table. Imported CSV data is validated.
 
 - **name**
-  - The name of the csv column. It becomes the field name of the temporary table.
+  - The name of the CSV column. It becomes the field name of the temporary table.
   - If the whole is given as an associative array, the name property of each column can be given as a key of the outer array. In that case, it can be omitted.
 - **type**
   - The data type that the field assumes. The temporary table is once imported as VARCHAR and it is determined whether it can be CAST() to the given type.
@@ -84,10 +84,10 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - However, since the DEFAULT option of 'CREATE TABLE' has no effect during CSV import, specify the **default** key.
   - Without **field** key, auto generated as `{$name} VARCHAR({$maxlength+1}) DEFAULT ''`
 - **required** (optional)
-  - The field is required input, and an empty field cause an error.
+  - The CSV column is required input, and an empty value cause an error.
   - Errors: *XXX_required*
 - **default** (optional)
-  - Change the initial value actually entered in the temporary table if the value of CSV the field is empty.
+  - Change the initial value actually entered in the temporary table if the value of the CSV column is empty.
   - Since it is concatenated with SQL as it is, it is necessary to write "'abc'" when giving a character string.
   - e.g. `'0'`, `'NULL'`, `"'abc'"`, `'NOW()'` 
 - **custom** (optional)
@@ -95,7 +95,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - Errors: *XXX_custom*
   - e.g. `deleteFlag BETWEEN '0' AND '1'`
 
-Since some validation result field values are sensitive, errors must be recognized in a fixed order.
+Since some validation result of CSV column values are sensitive, errors must be recognized in a fixed order.
 
 1. required
 2. maxlength
