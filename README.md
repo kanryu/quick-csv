@@ -90,7 +90,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - Since it is concatenated with SQL as it is, it is necessary to write "'abc'" when giving a character string.
   - e.g. `'0'`, `'NULL'`, `"'abc'"`, `'NOW()'` 
 - **custom** (optional)
-  - Describe the field value judgment formula directly. Write an expression so that the canonical value returns TRUE.
+  - Describe the field value validate formula directly. Write an expression so that the canonical value returns TRUE.
   - Errors: XXX_custom
   - e.g. `deleteFlag BETWEEN '0' AND '1'`
 
