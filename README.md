@@ -72,7 +72,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - The data type that the field assumes. The temporary table is once imported as VARCHAR and it is determined whether it can be CAST() to the given type.
   - Available: varchar, alphanumeric, datetime, date, decimal(n), decimal(n,m)
   - If varchar, do nothing. For other types, some confirmation is made.
-  - 'alphanumeric' is REGEXP '^[a-zA-Z0-9\-]+$'. e.g. 'abcde123', '123-456'
+  - 'alphanumeric' is `REGEXP '^[a-zA-Z0-9\-]+$'`. e.g. `'abcde123'`, `'123-456'`
   - Errors: XXX_alphanumeric, XXX_notdatetime, XXX_notinteger
 - **maxlength**
   - Determine the length of the string entered in the field.
@@ -80,19 +80,19 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - Errors: XXX_maxlength
 - **field** (optional)
   - define the field schema of the template table as manual
-  - default case(without field key), "\`{$name}\` VARCHAR({$maxlength+1}) DEFAULT ''"
   - However, since the DEFAULT option of 'CREATE TABLE' has no effect during CSV import, specify the 'default' key.
+  - default case(without field key), "\`{$name}\` VARCHAR({$maxlength+1}) DEFAULT ''"
 - **required** (optional)
   - The field is required input, and an empty field cause an error.
   - Errors: XXX_required
 - **default** (optional)
   - Change the initial value actually entered in the temporary table if the field is empty.
   - Since it is concatenated with SQL as it is, it is necessary to write "'abc'" when giving a character string.
-  - e.g. '0', 'NULL', "'abc'", 'NOW()' 
+  - e.g. `'0'`, `'NULL'`, `"'abc'"`, `'NOW()'` 
 - **custom** (optional)
   - Describe the field value judgment formula directly. Write an expression so that the canonical value returns TRUE.
   - Errors: XXX_custom
-  - e.g. "deleteFlag BETWEEN '0' AND '1'"
+  - e.g. `deleteFlag BETWEEN '0' AND '1'`
 
 Since some validation result field values are sensitive, errors must be recognized in a fixed order.
 
