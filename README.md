@@ -70,7 +70,8 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - If the whole is given as an associative array, the name property of each column can be given as a key of the outer array. In that case, it can be omitted.
 - **type**
   - The data type that the field assumes. The temporary table is once imported as VARCHAR and it is determined whether it can be CAST() to the given type.
-  - Available: varchar, alphanumeric, datetime, date, decimal(n), decimal(n,m)
+  - Available: *varchar, alphanumeric, datetime, date, decimal(n), decimal(n,m)*
+    - Note: *int, tinyint* fields as *decimal(n)*
   - If varchar, do nothing. For other types, some confirmation is made.
   - 'alphanumeric' is `REGEXP '^[a-zA-Z0-9\-]+$'`. e.g. `'abcde123'`, `'123-456'`
   - Errors: *XXX_alphanumeric, XXX_notdatetime, XXX_notinteger*
