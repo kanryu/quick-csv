@@ -74,30 +74,30 @@ class QuickCsvImporter
             throw new Exception('must be implemented');
         };
         // initialize validators
-        $this->setValidator('maxlength', function(&$v, $m, $name) {$v["{$name}_maxlength"] = "CHAR_LENGTH({$name}) > {$m['maxlength']}";});
+        $this->setValidator('maxlength', function(&$v, $m, $name) {$v["{$name}_maxlength"] = "CHAR_LENGTH({$name}) > {$m->maxlength}";});
         $this->setValidator('required', function(&$v, $m, $name) {$v["{$name}_required"] = "{$name} = ''";});
         $this->setValidator('custom', function(&$v, $m, $name) {
             // Embed the expression specified in the custom property in the query
-            $v["{$name}_custom"] = array_key_exists('required', $m)
+            $v["{$name}_custom"] = isset($m->required)
                 ? "NOT {$m['custom']}"
-                : "({$name} != '' AND NOT ({$m['custom']}))";
+                : "({$name} != '' AND NOT ({$m->custom}))";
         });
         $this->setValidator('type', function(&$v, $m, $name) {
             $empty_check = $this->getNotDefaultFormula($name);
-            $type = $m['type'];
+            $type = $m->type;
             if (array_key_exists($type, $this->validatorTypes)) {
                 $this->validatorTypes[$type]($v, $m, $name, $empty_check);
             } else {
                 // Character strings that cannot be converted to numbers are "(field=0)=1".
-                $v["{$name}_notinteger"] = "({$empty_check} AND {$name} = 0 AND {$name} != '0') OR CAST({$name} AS {$m['type']}) != {$name}";
+                $v["{$name}_notinteger"] = "({$empty_check} AND {$name} = 0 AND {$name} != '0') OR CAST({$name} AS {$type}) != {$name}";
             }
         });
         
         // initialize validator for types
         $this->setValidatorForType('varchar', function(&$v, $m, $name, $empty_check) {});
-        $this->setValidatorForType('datetime', function(&$v, $m, $name, $empty_check) {$v["{$name}_not{$m['type']}"] = "{$empty_check} AND {$name} != '' AND DAYOFYEAR({$name}) = 0";});
+        $this->setValidatorForType('datetime', function(&$v, $m, $name, $empty_check) {$v["{$name}_not{$m->type}"] = "{$empty_check} AND {$name} != '' AND DAYOFYEAR({$name}) = 0";});
         $this->setValidatorForType('date', $this->validatorTypes['datetime']);
-        $this->setValidatorForType('alphanumeric', function(&$v, $m, $name, $empty_check) {$v["{$name}_not{$m['type']}"] = "({$empty_check} AND {$name} != '' AND NOT {$name} REGEXP '^[a-zA-Z0-9\-]+$')";});
+        $this->setValidatorForType('alphanumeric', function(&$v, $m, $name, $empty_check) {$v["{$name}_not{$m->type}"] = "({$empty_check} AND {$name} != '' AND NOT {$name} REGEXP '^[a-zA-Z0-9\-]+$')";});
         
         $this->setProperties($options);
     }
@@ -144,7 +144,8 @@ class QuickCsvImporter
         $this->fieldSchema = $schema;
         $this->fieldMap = array();
         foreach ($schema as $i => $v) {
-            $name = array_key_exists('name', $v) ? $v['name'] : $i;
+            $v = is_array($v) ? (object)$v : $v;
+            $name = isset($v->name) ? $v->name : $i;
             $this->fieldMap[$name] = $v;
         }
     }
@@ -215,10 +216,10 @@ class QuickCsvImporter
         // expand fieldSchema [*] ['field'] as each field schema of the table
         $schemas = array();
         foreach ($this->fieldMap as $f => $v) {
-            $length = $v['maxlength'] + 1;
+            $length = $v->maxlength + 1;
             $type = $length > 255 ? 'TEXT' : "VARCHAR({$length})";
-            $schema_default = 'DEFAULT ' . (array_key_exists('default', $v) ? $v['default'] : "''");
-            $schemas[] = array_key_exists('field', $v) ? $v['field'] : "`{$f}` {$type} {$schema_default}";
+            $schema_default = 'DEFAULT ' . (isset($v->default) ? $v->default : "''");
+            $schemas[] = isset($v->field) ? $v->field : "`{$f}` {$type} {$schema_default}";
         }
         $field_lines = implode(",\n                ", $schemas);
         
@@ -255,15 +256,15 @@ class QuickCsvImporter
         }
         $names = array();
         $setters = array();
-        foreach($this->fieldMap as $field => $v) {
-            if(!array_key_exists('default', $v)) {
+        foreach ($this->fieldMap as $field => $v) {
+            if (!isset($v->default)) {
                 $names[] = $field;
                 continue;
             }
             // If the 'default' property exists, specify the initial value
             // when the CSV column is empty with that value.
             $names[] = "@var_{$field}";
-            $setters[] = "{$field} = CASE @var_{$field} WHEN '' THEN {$v['default']} ELSE @var_{$field} END";
+            $setters[] = "{$field} = CASE @var_{$field} WHEN '' THEN {$v->default} ELSE @var_{$field} END";
         }
         $settter_lines = empty($setters) ? '' : 'SET ' . implode(",\n                ", $setters);
         $ignoreLine = $this->hasCsvHeader ? 'IGNORE 1 LINES' : '';
@@ -294,8 +295,8 @@ SQL;
             throw new \Exception("[QuickCsv]: You must define the CSV schema!");
         }
         $fields = array();
-        foreach($this->fieldMap as $name => $m) {
-            foreach($this->validators as $prop => $vf) {
+        foreach ($this->fieldMap as $name => $m) {
+            foreach ($this->validators as $prop => $vf) {
                 if (array_key_exists($prop, $m)) {
                     $vf($fields, $m, $name);
                 }
@@ -421,14 +422,14 @@ SQL;
             throw new \Exception("[QuickCsv]: field must exist in the fieldSchema!");
         }
         $v = $this->fieldMap[$field];
-        if(array_key_exists('required', $v)) {
+        if (isset($v->required)) {
             $empty_check = "1=1";
-        } elseif (array_key_exists('default', $v) && $v['default'] == 'NULL' ) {
+        } elseif (isset($v->default) && $v->default == 'NULL' ) {
             // True only if not the default value
             $empty_check = "{$field} IS NOT NULL";
-        } elseif (array_key_exists('default', $v)) {
+        } elseif (isset($v->default)) {
             // True only if not the default value
-            $empty_check = "{$field} != {$v['default']}";
+            $empty_check = "{$field} != {$v->default}";
         } else {
             // True only if not empty
             $empty_check = "{$field} != ''";
@@ -487,7 +488,7 @@ SQL;
         if (!empty($destTableName)) {
             $this->destTableName = $destTableName;
         }
-        if(empty($body) || $body == '#') { // Concatenate 0 left justified
+        if (empty($body) || $body == '#') { // Concatenate 0 left justified
             // productCode == $prefix . $codeNum
             $newValue = "CONCAT({$prefix}, t2.{$this->csvRecordId} + IFNULL(t1.{$field}, 0))";
         } else { // Interpolate 0 to the specified number of digits and concatenate
@@ -535,8 +536,8 @@ SQL;
     {
         $schemas = array();
         $params = array();
-        foreach($this->fieldMap as $f => $v) {
-            if (array_key_exists('skip', $v) && $v['skip']) {
+        foreach ($this->fieldMap as $f => $v) {
+            if (isset($v->skip) && $v->skip) {
                 continue;
             }
             if (array_key_exists($f, $immediates)) {
@@ -547,7 +548,7 @@ SQL;
                 $schemas[] = "t1.{$f} = t2.{$f}";
             }
         }
-        foreach($immediates as $f => $v) {
+        foreach ($immediates as $f => $v) {
             $schemas[] = "t1.{$f} = :{$f}";
             $params[":{$f}"] = $v;
         }
@@ -556,7 +557,7 @@ SQL;
         $condition = "t1.{$this->destPrimaryKey} = t2.{$this->destPrimaryKey}";
         if (is_array($this->destPrimaryKey)) {
             $conditions = array();
-            foreach($this->destPrimaryKey as $f) {
+            foreach ($this->destPrimaryKey as $f) {
                 $conditions[] = "t1.{$f} = t2.{$f}";
             }
             $condition = implode(" AND\n                ", $conditions);
@@ -584,8 +585,8 @@ SQL;
         $names2 = array();
         $schemas = array();
         $params = array();
-        foreach($this->fieldMap as $f => $v) {
-            if (array_key_exists('skip', $v) && $v['skip']) {
+        foreach ($this->fieldMap as $f => $v) {
+            if (isset($v->skip) && $v->skip) {
                 continue;
             }
             $names1[] = $f;
@@ -597,7 +598,7 @@ SQL;
                 $names2[] = "t2.{$f}";
             }
         }
-        foreach($immediates as $f => $v) {
+        foreach ($immediates as $f => $v) {
             $names1[] = $f;
             $names2[] = ":{$f}";
             $params[":{$f}"] = $v;
@@ -610,7 +611,7 @@ SQL;
         if (is_array($this->destPrimaryKey)) {
             $conditions = array();
             $conditions2 = array();
-            foreach($this->destPrimaryKey as $f) {
+            foreach ($this->destPrimaryKey as $f) {
                 $conditions[] = "t1.{$f} = t2.{$f}";
                 $conditions2[] = "t1.{$f} IS NULL";
             }
@@ -632,8 +633,6 @@ SQL;
         ";
         return $this->execQuery($sql, $params, 'insertNonExistingRecords');
     }
-
-
 }
 
 

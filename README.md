@@ -96,6 +96,9 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - You can put all fields you set and `id` field(as CSV row number) on the expression.
   - Errors: *XXX_custom*
   - e.g. `deleteFlag BETWEEN '0' AND '1'`
+- **skip** (optional)
+  - True if it is a CSV field but a definition table field.
+  - Skipped from the transfer fields when updateExistingRecords/insertNonExistingRecords is executed.
 
 Since some validation result of CSV column values are sensitive, errors must be recognized in a fixed order.
 

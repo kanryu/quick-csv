@@ -1,8 +1,10 @@
 <?php
 require_once dirname(__FILE__).'/bootstrap.php';
 require_once dirname(__FILE__).'/../src/QuickCsvImporter.php';
+require_once dirname(__FILE__).'/../src/QuickCsvField.php';
 require_once dirname(__FILE__).'/../src/Mysql/QuickCsvImporter.php';
 use Kanryu\QuickCsv\MySQL\QuickCsvImporter;
+use Kanryu\QuickCsv\QuickCsvField;
 
 $table_field_tmpl = array(
 	array('name' => 'productId',   'type' => 'decimal(15)',   'maxlength' => 15,   ), 
@@ -11,8 +13,16 @@ $table_field_tmpl = array(
 	array('name' => 'productName', 'type' => 'varchar',       'maxlength' => 40,   'required' => true),
 	array('name' => 'price',       'type' => 'decimal(8,2)',  'maxlength' => 8,    'required' => true),
 	array('name' => 'cost',        'type' => 'decimal(14,5)', 'maxlength' => 14,   'default' => "NULL"),
-	array('name' => 'deleteFlag',  'type' => 'decimal(1)',    'maxlength' => 1,    'default' => "'0'", 'custom' => "deleteFlag BETWEEN '0' AND '1'"),
+//	array('name' => 'deleteFlag',  'type' => 'decimal(1)',    'maxlength' => 1,    'default' => "'0'", 'custom' => "deleteFlag BETWEEN '0' AND '1'"),
 );
+
+$deleteFlag = new QuickCsvField();
+$deleteFlag->name = 'deleteFlag';
+$deleteFlag->type = 'decimal(1)';
+$deleteFlag->maxlength = 1;
+$deleteFlag->default = "'0'";
+$deleteFlag->custom = "deleteFlag BETWEEN '0' AND '1'";
+$table_field_tmpl[] = $deleteFlag;
 
 try {
     $pdo = new PDO($pdo_dsn, DB_USER, DB_PASS, $pdo_options);

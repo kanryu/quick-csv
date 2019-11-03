@@ -65,10 +65,11 @@ class QuickCsvField
      */
     public $custom;
 
-
-
-
-
+    /** True if it is a CSV field but a definition table field. (optional)
+     *
+     * - Removed from the transfer fields when updateExistingRecords/insertNonExistingRecords is executed.
+     */
+    public $skip;
 }
 
 
