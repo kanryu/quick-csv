@@ -1,3 +1,3 @@
 
 var ApiGen = ApiGen || {};
-ApiGen.elements = [["c","QuickCsv\\MySQL\\QuickCsvImporter"],["c","QuickCsv\\QuickCsvImporter"]];
+ApiGen.elements = [["c","Kanryu\\QuickCsv\\MySQL\\QuickCsvImporter"],["c","Kanryu\\QuickCsv\\QuickCsvField"],["c","Kanryu\\QuickCsv\\QuickCsvImporter"]];

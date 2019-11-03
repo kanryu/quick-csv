@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Kanryu\QuickCsv\QuickCsvField</title>
+
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Kanryu.html">
+						Kanryu<span></span>
+					</a>
+
+						<ul>
+				<li class="active">
+					<a href="namespace-Kanryu.QuickCsv.html">
+						QuickCsv<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Kanryu.QuickCsv.MySQL.html">
+						MySQL					</a>
+
+						</li>
+							</ul></li></ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Kanryu.QuickCsv.QuickCsvField.html">QuickCsvField</a></li>
+				<li><a href="class-Kanryu.QuickCsv.QuickCsvImporter.html">QuickCsvImporter</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Kanryu.QuickCsv.html" title="Summary of Kanryu\QuickCsv"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class QuickCsvField</h1>
+
+
+	<div class="description">
+	<p>When setting fieldSchema to CSV column definition in QuickCsvImporter, you can provide an array of instances of this class instead of a double array.</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Kanryu.html">Kanryu</a>\<a href="namespace-Kanryu.QuickCsv.html">QuickCsv</a><br>
+		
+
+			<b>Located at</b> <a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#5-73" title="Go to source code">QuickCsvField.php</a>
+		<br>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="name" id="$name">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#10-17" title="Go to source code"><var>$name</var></a>
+
+			<div class="description short">
+				<p>The name of the CSV column. (required, partial optional)</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>The name of the CSV column. (required, partial optional)</p>
+
+<p>It becomes the field name of the temporary table.
+If the whole is given as an associative array,
+the name property of each column can be given as a key of the outer array.
+In that case, it can be omitted.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$name" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="type" id="$type">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#19-29" title="Go to source code"><var>$type</var></a>
+
+			<div class="description short">
+				<p>The data type that the field assumes. (required)</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>The data type that the field assumes. (required)</p>
+
+<p>The temporary table is once imported as VARCHAR and it is determined whether it can be CAST() to the given type.</p>
+
+<ul>
+<li>Available: <em>varchar, alphanumeric, datetime, date, decimal(n), decimal(n,m)</em></li>
+<li>Note: <em>int, tinyint</em> fields as <em>decimal(n)</em></li>
+<li>If varchar, do nothing. For other types, some confirmation is made.</li>
+<li>'alphanumeric' is <code>REGEXP '^[a-zA-Z0-9\-]+$'</code>. e.g. <code>'abcde123'</code>, <code>'123-456'</code></li>
+<li>Errors: <em>XXX_alphanumeric, XXX_notdatetime, XXX_notinteger</em></li>
+</ul>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$type" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="maxlength" id="$maxlength">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#31-36" title="Go to source code"><var>$maxlength</var></a>
+
+			<div class="description short">
+				<p>Determine the length of the string entered in the field. (required)</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Determine the length of the string entered in the field. (required)</p>
+
+<ul>
+<li>Each field of the temporary table is defined as a column of maxlength + 1 characters.</li>
+<li>Errors: <em>XXX_maxlength</em></li>
+</ul>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$maxlength" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="field" id="$field">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#38-43" title="Go to source code"><var>$field</var></a>
+
+			<div class="description short">
+				<p>Define the field schema of the temporary table by manual. (optional)</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Define the field schema of the temporary table by manual. (optional)</p>
+
+<ul>
+<li>However, since the DEFAULT option of 'CREATE TABLE' has no effect during CSV import, specify the <strong>default</strong> key.</li>
+<li>Without <strong>field</strong> key, auto generated as <code>{$name} VARCHAR({$maxlength+1}) DEFAULT {$default}</code></li>
+</ul>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$field" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="required" id="$required">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#45-50" title="Go to source code"><var>$required</var></a>
+
+			<div class="description short">
+				<p>The CSV column should be required input. (optional)</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>The CSV column should be required input. (optional)</p>
+
+<ul>
+<li>If true, and an empty value cause an error.</li>
+<li>Errors: <em>XXX_required</em></li>
+</ul>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$required" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="default" id="$default">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#52-57" title="Go to source code"><var>$default</var></a>
+
+			<div class="description short">
+				<p>Change the initial value actually entered in the temporary table if the value of the CSV column is empty. (optional)</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Change the initial value actually entered in the temporary table if the value of the CSV column is empty. (optional)</p>
+
+<ul>
+<li>Since it is inserted with SQL as it is, it is necessary to write "'abc'" when giving a character string.</li>
+<li>e.g. <code>'0'</code>, <code>'NULL'</code>, <code>"'abc'"</code>, <code>'NOW()'</code></li>
+</ul>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$default" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="custom" id="$custom">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#59-66" title="Go to source code"><var>$custom</var></a>
+
+			<div class="description short">
+				<p>Describe formula to validate the field value directly. (optional)</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Describe formula to validate the field value directly. (optional)</p>
+
+<ul>
+<li>Give an SQL expression so that the canonical value returns TRUE.</li>
+<li>You can put all fields you set and <code>id</code> field(as CSV row number) on the expression.</li>
+<li>Errors: <em>XXX_custom</em></li>
+<li>e.g. <code>deleteFlag BETWEEN '0' AND '1'</code></li>
+</ul>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$custom" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="skip" id="$skip">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Kanryu.QuickCsv.QuickCsvField.html#68-72" title="Go to source code"><var>$skip</var></a>
+
+			<div class="description short">
+				<p>True if it is a CSV field but a definition table field. (optional)</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>True if it is a CSV field but a definition table field. (optional)</p>
+
+<ul>
+<li>Removed from the transfer fields when updateExistingRecords/insertNonExistingRecords is executed.</li>
+</ul>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$skip" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js?cf46c5fcb7201fc45ce4736b4b573c40b33f2ad2"></script>
+<script src="elementlist.js?0a5b846fe5d1298e2a1acd562e88cd44fbfb0ff8"></script>
+</body>
+</html>
