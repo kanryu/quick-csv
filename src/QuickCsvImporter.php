@@ -26,11 +26,11 @@ class QuickCsvImporter
     /** Temporary table name to specify as the CSV direct import destination. */
     public $dataTableName = 'tempCsvData';
     
-    /** Target table name where data is finally entered. */
-    public $targetTableName = 'TARGET_TABLE';
+    /** Destination table name where data is finally entered. */
+    public $destTableName = 'TARGET_TABLE';
     
     /** Primary key of the target table where data is finally entered. */
-    public $targetPrimaryKey = 'PRIMARY_KEY';
+    public $destPrimaryKey = 'PRIMARY_KEY';
     
     public $csvSeparator = "','";
     public $csvEncloser = "'\"'";
@@ -58,6 +58,12 @@ class QuickCsvImporter
     /** CSV file character code */
     public $csvCharCode = 'cp932';
     
+    /** An associative array of functions that return validation expressions from fieldSchema properties */
+    public $validators = array();
+    
+    /** An associative array of functions that return validation expressions from the type of fieldSchema */
+    public $validatorTypes = array();
+    
     /** Several properties can be specified here, but no arguments are required. 
      *
      * @param array $options The name of the table for which data is finally imported
@@ -67,6 +73,32 @@ class QuickCsvImporter
         $this->query_callback = function ($sql, $params, $api) {
             throw new Exception('must be implemented');
         };
+        // initialize validators
+        $this->setValidator('maxlength', function(&$v, $m, $name) {$v["{$name}_maxlength"] = "CHAR_LENGTH({$name}) > {$m['maxlength']}";});
+        $this->setValidator('required', function(&$v, $m, $name) {$v["{$name}_required"] = "{$name} = ''";});
+        $this->setValidator('custom', function(&$v, $m, $name) {
+            // Embed the expression specified in the custom property in the query
+            $v["{$name}_custom"] = array_key_exists('required', $m)
+                ? "NOT {$m['custom']}"
+                : "({$name} != '' AND NOT ({$m['custom']}))";
+        });
+        $this->setValidator('type', function(&$v, $m, $name) {
+            $empty_check = $this->getNotDefaultFormula($name);
+            $type = $m['type'];
+            if (array_key_exists($type, $this->validatorTypes)) {
+                $this->validatorTypes[$type]($v, $m, $name, $empty_check);
+            } else {
+                // Character strings that cannot be converted to numbers are "(field=0)=1".
+                $v["{$name}_notinteger"] = "({$empty_check} AND {$name} = 0 AND {$name} != '0') OR CAST({$name} AS {$m['type']}) != {$name}";
+            }
+        });
+        
+        // initialize validator for types
+        $this->setValidatorForType('varchar', function(&$v, $m, $name, $empty_check) {});
+        $this->setValidatorForType('datetime', function(&$v, $m, $name, $empty_check) {$v["{$name}_not{$m['type']}"] = "{$empty_check} AND {$name} != '' AND DAYOFYEAR({$name}) = 0";});
+        $this->setValidatorForType('date', $this->validatorTypes['datetime']);
+        $this->setValidatorForType('alphanumeric', function(&$v, $m, $name, $empty_check) {$v["{$name}_not{$m['type']}"] = "({$empty_check} AND {$name} != '' AND NOT {$name} REGEXP '^[a-zA-Z0-9\-]+$')";});
+        
         $this->setProperties($options);
     }
     
@@ -82,6 +114,26 @@ class QuickCsvImporter
                 $this->$p = $v;
             }
         }
+    }
+    
+    /** Set a function that generates and returns a validation expression from each property value of fieldSchema.
+     *
+     * @param string $name property of each field of fieldSchema
+     * @param function $func function(&$validations, $fieldMap, $name) {}
+     */
+    public function setValidator($name, $func)
+    {
+        $this->validators[$name] = $func;
+    }
+    
+    /** Set function to generate and return validation expression of type from fieldSchema->type value.
+     *
+     * @param string $name property of each field of fieldSchema
+     * @param function $func function(&$validations, $fieldMap, $name, $empty_check) {}
+     */
+    public function setValidatorForType($name, $func)
+    {
+        $this->validatorTypes[$name] = $func;
     }
     
     /** Specify associative array the relationship between each column of CSV
@@ -242,41 +294,11 @@ SQL;
             throw new \Exception("[QuickCsv]: You must define the CSV schema!");
         }
         $fields = array();
-        foreach($this->fieldMap as $field => $v) {
-            if(array_key_exists('maxlength', $v)) {
-                $fields["{$field}_maxlength"] = "CHAR_LENGTH({$field}) > {$v['maxlength']}";
-            }
-            if(array_key_exists('required', $v) && $v['required']) {
-                $fields["{$field}_required"] = "{$field} = ''";
-            }
-            if(array_key_exists('custom', $v)) {
-                // Embed the expression specified in the custom property in the query
-                if(array_key_exists('required', $v)) {
-                    $fields["{$field}_custom"] = "NOT {$v['custom']}";
-                } else {
-                    $fields["{$field}_custom"] = "{$field} != '' AND NOT ({$v['custom']})";
+        foreach($this->fieldMap as $name => $m) {
+            foreach($this->validators as $prop => $vf) {
+                if (array_key_exists($prop, $m)) {
+                    $vf($fields, $m, $name);
                 }
-            }
-            if(!array_key_exists('type', $v)) {
-                continue;
-            }
-            $empty_check = $this->getNotDefaultFormula($field);
-            switch($v['type']) {
-                case 'varchar':
-                case 'text':
-                    break;
-                case 'datetime':case 'date':
-                    // If it is a valid date, DAYOFYEAR returns a number. Otherwise, NULL
-                    $fields["{$field}_notdatetime"] = "{$empty_check} AND {$field} != '' AND DAYOFYEAR({$field}) = 0";
-                    break;
-                case 'alphanumeric':
-                    // True if there are non-alphanumeric characters
-                    $fields["{$field}_alphanumeric"] = "{$empty_check} AND {$field} != '' AND NOT {$field} REGEXP '^[a-zA-Z0-9\-]+$'";
-                    break;
-                default: // as DECIMAL
-                    // Character strings that cannot be converted to numbers are "(field=0)=1".
-                    $fields["{$field}_notinteger"] = "({$empty_check} AND {$field} = 0 AND {$field} != '0') OR CAST({$field} AS {$v['type']}) != {$field}";
-                    break;
             }
         }
         return $this->validateBase('validateAllFields', $fields);
@@ -420,10 +442,10 @@ SQL;
      * @param string $field Field name to update
      * @param int $baseNumber Minimum value to auto increment
      */
-    public function updateFieldNumberByAutoCount($field, $baseNumber=0, $targetTableName=null)
+    public function updateFieldNumberByAutoCount($field, $baseNumber=0, $destTableName=null)
     {
-        if (!empty($targetTableName)) {
-            $this->targetTableName = $targetTableName;
+        if (!empty($destTableName)) {
+            $this->destTableName = $destTableName;
         }
         $sql = "
             UPDATE {$this->dataTableName} t10,
@@ -439,7 +461,7 @@ SQL;
                         FROM {$this->dataTableName}
                         UNION
                         SELECT MAX(productId) AS {$field}
-                        FROM {$this->targetTableName}
+                        FROM {$this->destTableName}
                     ) t0
                 ) t1
             ) t20
@@ -460,10 +482,10 @@ SQL;
      * @param string $body The number of digits to interpolate with 0. If '0000', the value 12 must be '0012'.
      * @param int $baseNumber Minimum value to auto increment
      */
-    public function updateFieldNumberByAutoCountWithPrefix($field, $prefix, $body='#', $baseNumber=0, $targetTableName=null)
+    public function updateFieldNumberByAutoCountWithPrefix($field, $prefix, $body='#', $baseNumber=0, $destTableName=null)
     {
-        if (!empty($targetTableName)) {
-            $this->targetTableName = $targetTableName;
+        if (!empty($destTableName)) {
+            $this->destTableName = $destTableName;
         }
         if(empty($body) || $body == '#') { // Concatenate 0 left justified
             // productCode == $prefix . $codeNum
@@ -531,10 +553,10 @@ SQL;
         }
         $field_lines = implode(",\n                ", $schemas);
         
-        $condition = "t1.{$this->targetPrimaryKey} = t2.{$this->targetPrimaryKey}";
-        if (is_array($this->targetPrimaryKey)) {
+        $condition = "t1.{$this->destPrimaryKey} = t2.{$this->destPrimaryKey}";
+        if (is_array($this->destPrimaryKey)) {
             $conditions = array();
-            foreach($this->targetPrimaryKey as $f) {
+            foreach($this->destPrimaryKey as $f) {
                 $conditions[] = "t1.{$f} = t2.{$f}";
             }
             $condition = implode(" AND\n                ", $conditions);
@@ -542,7 +564,7 @@ SQL;
 
         $sql = "
             UPDATE
-                {$this->targetTableName} t1,
+                {$this->destTableName} t1,
                 {$this->dataTableName} t2
             SET
                 {$field_lines}
@@ -583,12 +605,12 @@ SQL;
         $field_lines1 = implode(",", $names1);
         $field_lines2 = implode(",", $names2);
         
-        $condition = "t1.{$this->targetPrimaryKey} = t2.{$this->targetPrimaryKey}";
-        $condition2 = "t1.{$this->targetPrimaryKey} IS NULL";
-        if (is_array($this->targetPrimaryKey)) {
+        $condition = "t1.{$this->destPrimaryKey} = t2.{$this->destPrimaryKey}";
+        $condition2 = "t1.{$this->destPrimaryKey} IS NULL";
+        if (is_array($this->destPrimaryKey)) {
             $conditions = array();
             $conditions2 = array();
-            foreach($this->targetPrimaryKey as $f) {
+            foreach($this->destPrimaryKey as $f) {
                 $conditions[] = "t1.{$f} = t2.{$f}";
                 $conditions2[] = "t1.{$f} IS NULL";
             }
@@ -597,12 +619,12 @@ SQL;
         }
 
         $sql = "
-            INSERT INTO {$this->targetTableName}
+            INSERT INTO {$this->destTableName}
                 ({$field_lines1})
             SELECT
                 {$field_lines2}
             FROM {$this->dataTableName} t2
-            LEFT JOIN {$this->targetTableName} t1
+            LEFT JOIN {$this->destTableName} t1
               ON {$condition}
             WHERE
                 {$condition2}

@@ -7,7 +7,7 @@ use Kanryu\QuickCsv\MySQL\QuickCsvImporter;
 $table_field_tmpl = array(
 	array('name' => 'productId',   'type' => 'decimal(15)',   'maxlength' => 15,   ), 
 	array('name' => 'categoryId',  'type' => 'decimal(9)',    'maxlength' => 9,    'required' => true),
-	array('name' => 'productCode', 'type' => 'varchar',       'maxlength' => 20,   ),
+	array('name' => 'productCode', 'type' => 'alphanumeric',  'maxlength' => 20,   ),
 	array('name' => 'productName', 'type' => 'varchar',       'maxlength' => 40,   'required' => true),
 	array('name' => 'price',       'type' => 'decimal(8,2)',  'maxlength' => 8,    'required' => true),
 	array('name' => 'cost',        'type' => 'decimal(14,5)', 'maxlength' => 14,   'default' => "NULL"),
@@ -25,11 +25,11 @@ try {
         'asTemporary' => false,
         'dumpSql' => true,
     ));
-    $qcsv->setPdo($pdo);
-//    $qcsv->setQueryCallback(function ($sql, $params, $api) {
-//        echo "----------- {$api}:\n";
-//        echo "$sql\n";
-//    });
+//    $qcsv->setPdo($pdo);
+    $qcsv->setQueryCallback(function ($sql, $params, $api) {
+        echo "----------- {$api}:\n";
+        echo "$sql\n";
+    });
     $qcsv->create();
 //    $qcsv->import('./validationerror.csv');
     $qcsv->import('./ok.csv');

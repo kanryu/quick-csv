@@ -11,7 +11,7 @@ class QuickCsvImporterSchemaTest extends TestCase
     public $table_field_tmpl = array(
     	array('name' => 'productId',   'type' => 'decimal(15)',   'maxlength' => 15,   ), 
     	array('name' => 'categoryId',  'type' => 'decimal(9)',    'maxlength' => 9,    'required' => true),
-    	array('name' => 'productCode', 'type' => 'varchar',       'maxlength' => 20,   ),
+    	array('name' => 'productCode', 'type' => 'alphanumeric',  'maxlength' => 20,   ),
     	array('name' => 'productName', 'type' => 'varchar',       'maxlength' => 40,   'required' => true),
     	array('name' => 'price',       'type' => 'decimal(8,2)',  'maxlength' => 8,    'required' => true),
     	array('name' => 'cost',        'type' => 'decimal(14,5)', 'maxlength' => 14,   'default' => "NULL"),
@@ -44,8 +44,8 @@ class QuickCsvImporterSchemaTest extends TestCase
     public function setUp()
     {
         $this->importer = $qcsv = new QuickCsvImporter(array(
-            'targetTableName' => 'Product', 
-            'targetPrimaryKey' => 'productId', 
+            'destTableName' => 'Product', 
+            'destPrimaryKey' => 'productId', 
             'fieldSchema' => $this->table_field_tmpl,
             'asTemporary' => false,
         ));
@@ -107,6 +107,7 @@ SQL;
                 categoryId = '' AS categoryId_required,
                 (1=1 AND categoryId = 0 AND categoryId != '0') OR CAST(categoryId AS decimal(9)) != categoryId AS categoryId_notinteger,
                 CHAR_LENGTH(productCode) > 20 AS productCode_maxlength,
+                (productCode != '' AND productCode != '' AND NOT productCode REGEXP '^[a-zA-Z0-9\-]+$') AS productCode_notalphanumeric,
                 CHAR_LENGTH(productName) > 40 AS productName_maxlength,
                 productName = '' AS productName_required,
                 CHAR_LENGTH(price) > 8 AS price_maxlength,
@@ -115,7 +116,7 @@ SQL;
                 CHAR_LENGTH(cost) > 14 AS cost_maxlength,
                 (cost IS NOT NULL AND cost = 0 AND cost != '0') OR CAST(cost AS decimal(14,5)) != cost AS cost_notinteger,
                 CHAR_LENGTH(deleteFlag) > 1 AS deleteFlag_maxlength,
-                deleteFlag != '' AND NOT (deleteFlag BETWEEN '0' AND '1') AS deleteFlag_custom,
+                (deleteFlag != '' AND NOT (deleteFlag BETWEEN '0' AND '1')) AS deleteFlag_custom,
                 (deleteFlag != '0' AND deleteFlag = 0 AND deleteFlag != '0') OR CAST(deleteFlag AS decimal(1)) != deleteFlag AS deleteFlag_notinteger
             FROM
                 tempCsvData
@@ -126,6 +127,7 @@ SQL;
                 OR categoryId = ''
                 OR (1=1 AND categoryId = 0 AND categoryId != '0') OR CAST(categoryId AS decimal(9)) != categoryId
                 OR CHAR_LENGTH(productCode) > 20
+                OR (productCode != '' AND productCode != '' AND NOT productCode REGEXP '^[a-zA-Z0-9\-]+$')
                 OR CHAR_LENGTH(productName) > 40
                 OR productName = ''
                 OR CHAR_LENGTH(price) > 8
@@ -134,7 +136,7 @@ SQL;
                 OR CHAR_LENGTH(cost) > 14
                 OR (cost IS NOT NULL AND cost = 0 AND cost != '0') OR CAST(cost AS decimal(14,5)) != cost
                 OR CHAR_LENGTH(deleteFlag) > 1
-                OR deleteFlag != '' AND NOT (deleteFlag BETWEEN '0' AND '1')
+                OR (deleteFlag != '' AND NOT (deleteFlag BETWEEN '0' AND '1'))
                 OR (deleteFlag != '0' AND deleteFlag = 0 AND deleteFlag != '0') OR CAST(deleteFlag AS decimal(1)) != deleteFlag
 
             ORDER BY id
