@@ -85,6 +85,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - Without **field** key, auto generated as `{$name} VARCHAR({$maxlength+1}) DEFAULT {$default}`
 - **required** (optional)
   - The CSV column is required input, and an empty value cause an error.
+  - Do not specify **default** at the same time. Because **required** checks if the field is **''** .
   - Errors: *XXX_required*
 - **default** (optional)
   - Change the initial value actually entered in the temporary table if the value of the CSV column is empty.
