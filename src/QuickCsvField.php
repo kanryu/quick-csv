@@ -69,7 +69,7 @@ class QuickCsvField
      *
      * - Removed from the transfer fields when updateExistingRecords/insertNonExistingRecords is executed.
      */
-    public $skip;
+    public $skipped;
 }
 
 

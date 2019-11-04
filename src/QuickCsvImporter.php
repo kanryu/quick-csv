@@ -89,7 +89,7 @@ class QuickCsvImporter
                 $this->validatorTypes[$type]($v, $m, $name, $empty_check);
             } else {
                 // Character strings that cannot be converted to numbers are "(field=0)=1".
-                $v["{$name}_notinteger"] = "({$empty_check} AND {$name} = 0 AND {$name} != '0') OR CAST({$name} AS {$type}) != {$name}";
+                $v["{$name}_notdecimal"] = "({$empty_check} AND {$name} = 0 AND {$name} != '0') OR CAST({$name} AS {$type}) != {$name}";
             }
         });
         
@@ -537,7 +537,7 @@ SQL;
         $schemas = array();
         $params = array();
         foreach ($this->fieldMap as $f => $v) {
-            if (isset($v->skip) && $v->skip) {
+            if (isset($v->skipped) && $v->skipped) {
                 continue;
             }
             if (array_key_exists($f, $immediates)) {

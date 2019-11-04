@@ -74,7 +74,7 @@ class QuickCsvImporterSchemaTest extends TestCase
                 `deleteFlag` VARCHAR(2) DEFAULT '0',
                 PRIMARY KEY (`id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-        ",$this->sqls[1]);
+        ", $this->sqls[1]);
     }
     
     public function test_import()
@@ -102,22 +102,22 @@ SQL;
             SELECT
                 id,
                 CHAR_LENGTH(productId) > 15 AS productId_maxlength,
-                (productId != '' AND productId = 0 AND productId != '0') OR CAST(productId AS decimal(15)) != productId AS productId_notinteger,
+                (productId != '' AND productId = 0 AND productId != '0') OR CAST(productId AS decimal(15)) != productId AS productId_notdecimal,
                 CHAR_LENGTH(categoryId) > 9 AS categoryId_maxlength,
                 categoryId = '' AS categoryId_required,
-                (1=1 AND categoryId = 0 AND categoryId != '0') OR CAST(categoryId AS decimal(9)) != categoryId AS categoryId_notinteger,
+                (1=1 AND categoryId = 0 AND categoryId != '0') OR CAST(categoryId AS decimal(9)) != categoryId AS categoryId_notdecimal,
                 CHAR_LENGTH(productCode) > 20 AS productCode_maxlength,
                 (productCode != '' AND productCode != '' AND NOT productCode REGEXP '^[a-zA-Z0-9\-]+$') AS productCode_notalphanumeric,
                 CHAR_LENGTH(productName) > 40 AS productName_maxlength,
                 productName = '' AS productName_required,
                 CHAR_LENGTH(price) > 8 AS price_maxlength,
                 price = '' AS price_required,
-                (1=1 AND price = 0 AND price != '0') OR CAST(price AS decimal(8,2)) != price AS price_notinteger,
+                (1=1 AND price = 0 AND price != '0') OR CAST(price AS decimal(8,2)) != price AS price_notdecimal,
                 CHAR_LENGTH(cost) > 14 AS cost_maxlength,
-                (cost IS NOT NULL AND cost = 0 AND cost != '0') OR CAST(cost AS decimal(14,5)) != cost AS cost_notinteger,
+                (cost IS NOT NULL AND cost = 0 AND cost != '0') OR CAST(cost AS decimal(14,5)) != cost AS cost_notdecimal,
                 CHAR_LENGTH(deleteFlag) > 1 AS deleteFlag_maxlength,
                 (deleteFlag != '' AND NOT (deleteFlag BETWEEN '0' AND '1')) AS deleteFlag_custom,
-                (deleteFlag != '0' AND deleteFlag = 0 AND deleteFlag != '0') OR CAST(deleteFlag AS decimal(1)) != deleteFlag AS deleteFlag_notinteger
+                (deleteFlag != '0' AND deleteFlag = 0 AND deleteFlag != '0') OR CAST(deleteFlag AS decimal(1)) != deleteFlag AS deleteFlag_notdecimal
             FROM
                 tempCsvData
             WHERE
@@ -140,7 +140,7 @@ SQL;
                 OR (deleteFlag != '0' AND deleteFlag = 0 AND deleteFlag != '0') OR CAST(deleteFlag AS decimal(1)) != deleteFlag
 
             ORDER BY id
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
     
     public function test_validateDuplicatedId_single()
@@ -161,7 +161,7 @@ SQL;
                 t1.productId = t2.productId
             WHERE t2.___count > 1
             ORDER BY t1.id
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
     
     public function test_validateDuplicatedId_complex()
@@ -183,7 +183,7 @@ SQL;
                 t1.productId = t2.productId AND t1.productCode = t2.productCode
             WHERE t2.___count > 1
             ORDER BY t1.id
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
     
     public function test_validateNonExistForeignKey()
@@ -206,7 +206,7 @@ SQL;
                         AND deleteFlag = 0
                 )
             ORDER BY id
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
     
     public function test_updateFieldNumberByAutoCount()
@@ -235,7 +235,7 @@ SQL;
             WHERE
                 t10.productId = 0
             AND t10.id = t20.id
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
     
     public function test_updateFieldNumberByAutoCountWithPrefix_left()
@@ -268,7 +268,7 @@ SQL;
             WHERE
                 t10.productCode = 0
             AND t10.id = t20.id
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
     
     public function test_updateFieldNumberByAutoCountWithPrefix_right()
@@ -301,7 +301,7 @@ SQL;
             WHERE
                 t10.productCode = 0
             AND t10.id = t20.id
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
     
     public function test_updateExistingRecords()
@@ -322,7 +322,7 @@ SQL;
                 t1.updated_at = :updated_at
             WHERE
                 t1.productId = t2.productId
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
     
     public function test_insertNonExistingRecords()
@@ -339,7 +339,7 @@ SQL;
             WHERE
                 t1.productId IS NULL
             ORDER BY t2.id
-        ",$this->sqls[0]);
+        ", $this->sqls[0]);
     }
 }
 

@@ -30,17 +30,17 @@ use Kanryu\QuickCsv\QuickCsvImporter;
 
 // -- (initialize begins)
 $table_field_tmpl = array(
-	array('name' => 'productId',   'type' => 'decimal(15)',   'maxlength' => 15,   ), 
-	array('name' => 'categoryId',  'type' => 'decimal(9)',    'maxlength' => 9,    'required' => true),
-	array('name' => 'productCode', 'type' => 'varchar',       'maxlength' => 20,   ),
-	array('name' => 'productName', 'type' => 'varchar',       'maxlength' => 40,   'required' => true),
-	array('name' => 'price',       'type' => 'decimal(8,2)',  'maxlength' => 8,    'required' => true),
-	array('name' => 'cost',        'type' => 'decimal(14,5)', 'maxlength' => 14,   'default' => "NULL"),
-	array('name' => 'deleteFlag',  'type' => 'decimal(1)',    'maxlength' => 1,    'default' => "'0'", 'custom' => "deleteFlag BETWEEN '0' AND '1'"),
+    array('name' => 'productId',   'type' => 'decimal(15)',   'maxlength' => 15,   ), 
+    array('name' => 'categoryId',  'type' => 'decimal(9)',    'maxlength' => 9,    'required' => true),
+    array('name' => 'productCode', 'type' => 'varchar',       'maxlength' => 20,   ),
+    array('name' => 'productName', 'type' => 'varchar',       'maxlength' => 40,   'required' => true),
+    array('name' => 'price',       'type' => 'decimal(8,2)',  'maxlength' => 8,    'required' => true),
+    array('name' => 'cost',        'type' => 'decimal(14,5)', 'maxlength' => 14,   'default' => "NULL"),
+    array('name' => 'deleteFlag',  'type' => 'decimal(1)',    'maxlength' => 1,    'default' => "'0'", 'custom' => "deleteFlag BETWEEN '0' AND '1'"),
 );
 $qcsv = new QuickCsvImporter([
-    'targetTableName' => 'Product', 
-    'targetPrimaryKey' => 'productId', 
+    'destTableName' => 'Product', 
+    'destPrimaryKey' => 'productId', 
     'fieldSchema' => $table_field_tmpl
 ]);
 $qcsv->setPdo($pdo); // set your pdo or other RDB drivers;
@@ -57,9 +57,9 @@ $qcsv->validateDuplicatedId('productId'); // validate duplicated uniqued field
 $qcsv->validateNonExistForeignKey('categoryId', 'categoryId', 'Category', 'deleteFlag = 0');
 // -- (validate ends)
 
-// -- merge to the target table
-$qcsv->updateExistingRecords(); // Overwrite records existing in the target table with CSV
-$qcsv->insertNonExistingRecords(); // Add a new record from CSV that does not exist in the target table
+// -- merge to the destination table
+$qcsv->updateExistingRecords(); // Overwrite records existing in the destination table with CSV
+$qcsv->insertNonExistingRecords(); // Add a new record from CSV that does not exist in the destination table
 ```
 
 ## CSV Field Schema
@@ -74,7 +74,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
     - Note: *int, tinyint* fields as *decimal(n)*
   - If varchar, do nothing. For other types, some confirmation is made.
   - 'alphanumeric' is `REGEXP '^[a-zA-Z0-9\-]+$'`. e.g. `'abcde123'`, `'123-456'`
-  - Errors: *XXX_alphanumeric, XXX_notdatetime, XXX_notinteger*
+  - Errors: *XXX_notalphanumeric, XXX_notdatetime, XXX_notdecimal*
 - **maxlength**
   - Determine the length of the string entered in the field.
   - Each field of the temporary table is defined as a column of maxlength + 1 characters.
@@ -91,14 +91,15 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
   - Since it is inserted with SQL as it is, it is necessary to write "'abc'" when giving a character string.
   - e.g. `'0'`, `'NULL'`, `"'abc'"`, `'NOW()'` 
 - **custom** (optional)
-  - Describe formula to validate the field value directly. 
+  - Describe SQL formula to validate the field value directly. 
   - Give an SQL expression so that the canonical value returns TRUE.
   - You can put all fields you set and `id` field(as CSV row number) on the expression.
   - Errors: *XXX_custom*
   - e.g. `deleteFlag BETWEEN '0' AND '1'`
-- **skip** (optional)
-  - True if it is a CSV field but a definition table field.
+- **skipped** (optional)
+  - If true, it is one of the CSV fields but not the destination table field.
   - Skipped from the transfer fields when updateExistingRecords/insertNonExistingRecords is executed.
+  - This can be specified for columns that are not entered in the destination table in some way, such as user-defined columns and comment columns.
 
 Since some validation result of CSV column values are sensitive, errors must be recognized in a fixed order.
 
