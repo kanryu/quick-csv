@@ -74,6 +74,7 @@ You give QuickCsvImporter an CSV column definition as an array. This is actually
     - Note: *int, tinyint* fields as *decimal(n)*
   - If varchar, do nothing. For other types, some confirmation is made.
   - 'alphanumeric' is `REGEXP '^[a-zA-Z0-9\-]+$'`. e.g. `'abcde123'`, `'123-456'`
+  - You can add a new type by calling setValidatorForType().
   - Errors: *XXX_notalphanumeric, XXX_notdatetime, XXX_notdecimal*
 - **maxlength**
   - Determine the length of the string entered in the field.
