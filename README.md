@@ -1,5 +1,5 @@
 # QuickCsv
-Portable PHP library that allows you to import and export CSV very fast by issuing special queries to RDBs.
+Portable PHP library that allows you to import and export CSV very fast by executing special queries to RDBs.
 
 ## Why is QuickCsv so fast?
 Compared with the input value from the web form, the data imported by CSV has many rows.
